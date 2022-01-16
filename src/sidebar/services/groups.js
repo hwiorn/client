@@ -456,7 +456,12 @@ export class GroupsService {
         .map(ann => ({ ...ann, group: newGroupId }));
 
       if (updatedAnnotations.length) {
-        this._store.addAnnotations(updatedAnnotations);
+        // TODO - Handle the case where not all new annotations belong to the
+        // same frame.
+        this._store.addAnnotations(
+          updatedAnnotations[0].$frameId,
+          updatedAnnotations
+        );
       }
 
       // Persist this group as the last focused group default
