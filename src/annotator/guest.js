@@ -312,7 +312,10 @@ export class Guest {
     this._hostRPC.on(
       'focusAnnotations',
       /** @param {string[]} tags */
-      tags => this._focusAnnotations(tags)
+      tags => {
+        this._focusAnnotations(tags);
+        this._sidebarRPC.call('focusAnnotations', tags);
+      }
     );
 
     this._hostRPC.on(
@@ -635,8 +638,6 @@ export class Guest {
         setHighlightsFocused(anchor.highlights, toggle);
       }
     }
-
-    this._sidebarRPC.call('focusAnnotations', tags);
   }
 
   /**
