@@ -71,6 +71,14 @@ export class VitalSourceInjector {
       const isBookContent = frame.contentDocument?.querySelector('p');
       if (isBookContent) {
         injectClient(frame, config);
+
+        const style = document.createElement('style');
+        style.textContent = `iframe { height: 100% !important; }`;
+        frame.insertAdjacentElement('beforebegin', style);
+
+        // FIXME - This doesn't always work, looks like VS can sometimes re-add
+        // the attribute.
+        frame.removeAttribute('scrolling');
       }
     };
 
