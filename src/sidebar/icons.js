@@ -39,6 +39,8 @@ import {
   socialFacebook,
   socialTwitter,
   trash,
+  videoImage,
+  videoTimestamp,
 } from '@hypothesis/frontend-shared/lib/icons';
 
 // The following icons differ here from the shared-package versions
@@ -83,6 +85,9 @@ export const sidebarIcons = {
   'format-list-numbered': listOrdered,
   'format-list-unordered': listUnordered,
   'format-quote': editorQuote,
+  'video-image': videoImage,
+  'video-timestamp': videoTimestamp,
+
   groups,
   help,
   hide,

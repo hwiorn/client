@@ -21,6 +21,8 @@ import MarkdownView from './MarkdownView';
 // Mapping of toolbar command name to key for Ctrl+<key> keyboard shortcuts.
 // The shortcuts are taken from Stack Overflow's editor.
 const SHORTCUT_KEYS = {
+  vid_ts: 'T',
+  vid_img: 'G',
   bold: 'b',
   italic: 'i',
   link: 'l',
@@ -67,6 +69,34 @@ function handleToolbarCommand(command, inputEl) {
     }
   };
 
+  const insertVidTs = state => {
+    //TODO: implement insertVidTs
+    const before = state.text.slice(0, state.selectionStart);
+    if (
+      before.length === 0 ||
+      before.slice(-1) === '\n' ||
+      before.slice(-2) === '$$'
+    ) {
+      return toggleSpanStyle(state, '$$', '$$', 'Insert LaTeX');
+    } else {
+      return toggleSpanStyle(state, '\\(', '\\)', 'Insert LaTeX');
+    }
+  };
+
+  const insertVidImg = state => {
+    //TODO: implement insertVidImg
+    const before = state.text.slice(0, state.selectionStart);
+    if (
+      before.length === 0 ||
+      before.slice(-1) === '\n' ||
+      before.slice(-2) === '$$'
+    ) {
+      return toggleSpanStyle(state, '$$', '$$', 'Insert LaTeX');
+    } else {
+      return toggleSpanStyle(state, '\\(', '\\)', 'Insert LaTeX');
+    }
+  };
+
   switch (command) {
     case 'bold':
       update(state => toggleSpanStyle(state, '**', '**', 'Bold'));
@@ -91,6 +121,11 @@ function handleToolbarCommand(command, inputEl) {
       break;
     case 'list':
       update(state => toggleBlockStyle(state, '* '));
+      break;
+    case 'vidts':
+      update(insertVidTs);
+      case 'vidimg':
+        update(insertVidImg);
       break;
     default:
       throw new Error(`Unknown toolbar command "${command}"`);
@@ -182,9 +217,11 @@ function Toolbar({ isPreviewing, onCommand, onTogglePreview }) {
     list: 7,
     help: 8,
     preview: 9,
+    vidts: 10,
+    vidimg: 11,
 
     // Total button count
-    maxId: 10,
+    maxId: 12,
   };
 
   // Keep track of a roving index. The active roving tabIndex
@@ -274,6 +311,24 @@ function Toolbar({ isPreviewing, onCommand, onTogglePreview }) {
       aria-label="Markdown editor toolbar"
       onKeyDown={handleKeyDown}
     >
+      <ToolbarButton
+        disabled={isPreviewing}
+        iconName="video-timestamp"
+        onClick={() => onCommand('vidts')}
+        shortcutKey={SHORTCUT_KEYS.vid_ts}
+        buttonRef={buttonRefs[buttonIds.vid_ts]}
+        tabIndex={getTabIndex(buttonIds.vid_ts)}
+        title="Insert Video Timestamp"
+      />
+      <ToolbarButton
+        disabled={isPreviewing}
+        iconName="video-image"
+        onClick={() => onCommand('vidimg')}
+        shortcutKey={SHORTCUT_KEYS.vid_img}
+        buttonRef={buttonRefs[buttonIds.vid_img]}
+        tabIndex={getTabIndex(buttonIds.vid_img)}
+        title="Insert Video Image"
+      />
       <ToolbarButton
         disabled={isPreviewing}
         iconName="format-bold"

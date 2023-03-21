@@ -18,7 +18,7 @@ help:
 
 .PHONY: dev
 dev: node_modules/.uptodate
-	node_modules/.bin/gulp watch
+	env NOTEBOOK_APP_URL="https://hypothes.is/notebook" SIDEBAR_APP_URL="https://hypothes.is/app.html" NODE_ENV=production node_modules/.bin/gulp watch
 
 .PHONY: test
 test: node_modules/.uptodate
